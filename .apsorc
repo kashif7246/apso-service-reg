@@ -1,0 +1,200 @@
+{
+  "entities": [
+    {
+      "name": "Survey",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "varchar",
+          "nullable": false,
+          "isIndex": true,
+          "isUnique": false
+        },
+        {
+          "name": "descriptionms",
+          "type": "text",
+          "nullable": true,
+          "isIndex": false,
+          "isUnique": false
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "title"
+          ],
+          "unique": false
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "Question",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "survey_id",
+          "type": "uuid",
+          "nullable": false,
+          "isIndex": true,
+          "isUnique": false
+        },
+        {
+          "name": "question_text",
+          "type": "text",
+          "nullable": false,
+          "isIndex": false,
+          "isUnique": false
+        },
+        {
+          "name": "response_type",
+          "type": "varchar",
+          "nullable": false,
+          "values": [
+            "text",
+            "multiple_choice",
+            "scale",
+            "boolean"
+          ],
+          "isIndex": false,
+          "isUnique": false
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "survey_id"
+          ],
+          "unique": false
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "Response",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "question_id",
+          "type": "uuid",
+          "nullable": false,
+          "isIndex": true,
+          "isUnique": false
+        },
+        {
+          "name": "response_value",
+          "type": "text",
+          "nullable": false,
+          "isIndex": false,
+          "isUnique": false
+        },
+        {
+          "name": "respondent_id",
+          "type": "uuid",
+          "nullable": false,
+          "isIndex": true,
+          "isUnique": false
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "question_id",
+            "respondent_id"
+          ],
+          "unique": false
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "Respondent",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "varchar",
+          "nullable": false,
+          "isIndex": false,
+          "isUnique": false
+        },
+        {
+          "name": "email",
+          "type": "varchar",
+          "nullable": false,
+          "isUnique": true,
+          "isIndex": false
+        }
+      ],
+      "indexes": [],
+      "uniques": []
+    },
+    {
+      "name": "SurveyAnalytics",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "survey_id",
+          "type": "uuid",
+          "nullable": false,
+          "isIndex": true,
+          "isUnique": false
+        },
+        {
+          "name": "total_responsess",
+          "type": "integer",
+          "isIndex": false,
+          "isUnique": false,
+          "nullable": false,
+          "primary": false,
+          "values": []
+        },
+        {
+          "name": "average_score",
+          "type": "decimal",
+          "nullable": true,
+          "isIndex": false,
+          "isUnique": false
+        }
+      ],
+      "indexes": [
+        {
+          "fields": [
+            "survey_id"
+          ],
+          "unique": false
+        }
+      ],
+      "uniques": []
+    }
+  ],
+  "relationships": [
+    {
+      "from": "Survey",
+      "to": "Question",
+      "type": "OneToMany"
+    },
+    {
+      "from": "Question",
+      "to": "Response",
+      "type": "OneToMany"
+    },
+    {
+      "from": "Respondent",
+      "to": "Response",
+      "type": "OneToMany"
+    },
+    {
+      "from": "Survey",
+      "to": "SurveyAnalytics",
+      "type": "OneToOne"
+    }
+  ],
+  "_removedEntities": []
+}
